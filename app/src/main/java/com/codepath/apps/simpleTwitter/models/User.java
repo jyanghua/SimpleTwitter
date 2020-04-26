@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.models;
+package com.codepath.apps.simpleTwitter.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

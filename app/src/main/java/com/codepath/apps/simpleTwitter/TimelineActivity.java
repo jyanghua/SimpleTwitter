@@ -1,14 +1,17 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.simpleTwitter;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
-import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.simpleTwitter.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -33,6 +36,20 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+
+        // Remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Display logo and set clickable
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.toolbar_logo);
 
         swipeContainer = findViewById(R.id.swipeContainer);
 
@@ -129,5 +146,16 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onFailure", throwable);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                rvTweets.smoothScrollToPosition(0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
