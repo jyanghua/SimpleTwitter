@@ -12,8 +12,8 @@ public class User {
     public static User fromJson(JSONObject jsonObject) throws JSONException {
         User user = new User();
         user.name = jsonObject.getString("name");
-        user.screenName = jsonObject.getString("screen_name");
-        user.profileImageUrl = jsonObject.getString("profile_image_url_https");
+        user.screenName = String.format("@%s", jsonObject.getString("screen_name"));
+        user.profileImageUrl = jsonObject.getString("profile_image_url_https").replaceFirst("_normal.", "_bigger.");
         return user;
     }
 }

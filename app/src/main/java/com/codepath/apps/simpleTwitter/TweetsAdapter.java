@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.codepath.apps.simpleTwitter.models.Media;
 import com.codepath.apps.simpleTwitter.models.Tweet;
 
 import java.util.List;
@@ -62,22 +64,50 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     // Define a viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView ivProfileImage;
         TextView tvBody;
+        TextView tvName;
         TextView tvScreenName;
+        TextView tvRetweetCount;
+        TextView tvFavoriteCount;
+        TextView tvTimestamp;
+        ImageView ivTweetImage;
+
+        int radius = 2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
+            tvName = itemView.findViewById(R.id.tvName);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
+            tvFavoriteCount = itemView.findViewById(R.id.tvFavoriteCount);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            ivTweetImage = itemView.findViewById(R.id.ivTweetImage);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
+            tvName.setText(tweet.user.name);
             tvScreenName.setText(tweet.user.screenName);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            tvRetweetCount.setText(String.valueOf(tweet.retweetCount));
+            tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+            tvTimestamp.setText(tweet.createdAt);
+            Glide.with(context)
+                    .load(tweet.user.profileImageUrl)
+                    .circleCrop()
+                    .into(ivProfileImage);
+
+            if (tweet.media != null && tweet.media.type.equals(Media.PHOTO)){
+                ivTweetImage.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(tweet.media.mediaUrl)
+                        .transform(new RoundedCorners(radius))
+                        .into(ivTweetImage);
+            } else {
+                ivTweetImage.setVisibility(View.GONE);
+            }
         }
     }
 }

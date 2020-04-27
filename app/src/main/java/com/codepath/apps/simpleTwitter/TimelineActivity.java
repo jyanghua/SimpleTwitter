@@ -3,10 +3,13 @@ package com.codepath.apps.simpleTwitter;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -54,10 +57,8 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer = findViewById(R.id.swipeContainer);
 
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        swipeContainer.setColorSchemeResources(R.color.colorAccent);
+        swipeContainer.setProgressBackgroundColorSchemeResource(R.color.colorPrimary);
 
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -78,8 +79,13 @@ public class TimelineActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
+
+
         // Recycler view setup: layout manager and adapter
         rvTweets.setLayoutManager(layoutManager);
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
+        rvTweets.addItemDecoration(itemDecorator);
         rvTweets.setAdapter(adapter);
 
         client = TwitterApp.getRestClient(this);
