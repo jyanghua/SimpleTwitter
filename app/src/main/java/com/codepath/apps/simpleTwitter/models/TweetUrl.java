@@ -2,7 +2,9 @@ package com.codepath.apps.simpleTwitter.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class TweetUrl {
 
     public String url;

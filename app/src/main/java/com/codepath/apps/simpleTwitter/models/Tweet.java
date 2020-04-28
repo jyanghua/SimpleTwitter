@@ -5,14 +5,18 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Parcel
 public class Tweet {
 
     public String body;
     public String createdAt;
+    public String relativeTimestamp;
+    public String fullTimestamp;
     public long id;
     public User user;
     public int retweetCount;
@@ -23,7 +27,9 @@ public class Tweet {
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
         tweet.body = jsonObject.getString("full_text");
-        tweet.createdAt = getFormattedTimestamp(jsonObject.getString("created_at"));
+        tweet.createdAt = jsonObject.getString("created_at");
+        tweet.relativeTimestamp = TimeFormatter.getTimeDifference(tweet.createdAt);
+        tweet.fullTimestamp = TimeFormatter.getTimeStamp(tweet.createdAt);
         tweet.id = jsonObject.getLong("id");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.retweetCount = jsonObject.getInt("retweet_count");
@@ -60,10 +66,6 @@ public class Tweet {
             tweets.add(fromJson(jsonArray.getJSONObject(i)));
         }
         return tweets;
-    }
-
-    public static String getFormattedTimestamp(String createdAt) {
-        return TimeFormatter.getTimeDifference(createdAt);
     }
 
     public static String formatBodyUrls(String body, List<TweetUrl> tweetUrls) {

@@ -1,4 +1,4 @@
-package com.codepath.apps.simpleTwitter;
+package com.codepath.apps.simpleTwitter.adapters;
 
 import android.content.Context;
 import android.text.Html;
@@ -13,19 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.codepath.apps.simpleTwitter.R;
 import com.codepath.apps.simpleTwitter.models.Media;
 import com.codepath.apps.simpleTwitter.models.Tweet;
 
 import java.util.List;
 
-public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
+public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder>{
 
     Context context;
     List<Tweet> tweets;
 
     // Pass in context and list of tweets
-    public TweetsAdapter(Context context, List<Tweet> tweets) {
+    public CommentsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
         this.tweets = tweets;
     }
