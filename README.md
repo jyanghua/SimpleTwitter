@@ -31,6 +31,9 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [ ] List anything else that you can get done to improve the app functionality!
+- [x] Remove the media URL from the body since it is already previewed.
+- [x] Replace the shortened Twitter URLs with the original shortened URLs to make it feel like the Twitter App (Changed autoLink to setMovementMethod to stop overriding HTML body).
+
 
 ## Video Walkthrough
 

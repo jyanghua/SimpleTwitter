@@ -1,6 +1,8 @@
 package com.codepath.apps.simpleTwitter;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,8 +75,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvTimestamp;
         ImageView ivTweetImage;
 
-        int radius = 2;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
@@ -88,7 +88,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
 
         public void bind(Tweet tweet) {
-            tvBody.setText(tweet.body);
+            tvBody.setText(Html.fromHtml(tweet.body));
+            tvBody.setMovementMethod(LinkMovementMethod.getInstance());
             tvName.setText(tweet.user.name);
             tvScreenName.setText(tweet.user.screenName);
             tvRetweetCount.setText(String.valueOf(tweet.retweetCount));
@@ -103,7 +104,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivTweetImage.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(tweet.media.mediaUrl)
-                        .transform(new RoundedCorners(radius))
+                        .centerCrop()
                         .into(ivTweetImage);
             } else {
                 ivTweetImage.setVisibility(View.GONE);
