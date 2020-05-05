@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary">
+
+    <ImageButton
+        android:id="@+id/ibCancelTweet"
+        style="@android:style/Widget.Material.Light.ImageButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_clear_black_24dp" />
+
+    <Button
+        android:id="@+id/btnTweet"
+        android:layout_width="68dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorTextPrimary"
+        android:textAllCaps="false"
+        android:alpha="0.5"
+        android:text="@string/tweet"
+        android:clickable="false"
+        android:background="@drawable/rounded_button"/>
+
+    <ImageView
+        android:id="@+id/ivComposeProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/ibCancelTweet"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ibCancelTweet"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="280"
+        app:hintEnabled="false"
+        app:counterTextAppearance="@style/counterText"
+        app:errorTextAppearance="@style/counterOverride"
+        android:layout_toEndOf="@+id/ivComposeProfile">
+
+        <EditText
+            android:id="@+id/etCompose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="What's happening?"
+            android:inputType="textMultiLine"
+            android:minLines="8"
+            android:textColor="@color/colorTextPrimary"
+            android:textColorHint="@color/colorTextSecondary" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</RelativeLayout>

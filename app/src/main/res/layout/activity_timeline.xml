@@ -36,4 +36,17 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:layout_anchor="@+id/swipeContainer"
+        app:layout_anchorGravity="bottom|end"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_compose_tweet"
+        android:focusable="true" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

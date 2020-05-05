@@ -24,9 +24,19 @@ public class Tweet {
     public List<TweetUrl> tweetUrls;
     public Media media;
 
+    // Empty constructor for the Parceler Library
+    public Tweet() {}
+
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("full_text");
+
+        try {
+            tweet.body = jsonObject.getString("full_text");
+        } catch (Exception e) {
+            Log.e("Tweet", "Error getting full text from tweet, opting for regular text", e);
+            tweet.body = jsonObject.getString("text");
+        }
+
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.relativeTimestamp = TimeFormatter.getTimeDifference(tweet.createdAt);
         tweet.fullTimestamp = TimeFormatter.getTimeStamp(tweet.createdAt);

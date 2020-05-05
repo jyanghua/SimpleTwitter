@@ -4,21 +4,28 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.apps.simpleTwitter.adapters.TweetsAdapter;
 import com.codepath.apps.simpleTwitter.models.Tweet;
+import com.codepath.apps.simpleTwitter.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +38,11 @@ public class TimelineActivity extends AppCompatActivity {
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
+    User profile;
     TweetsAdapter adapter;
     SwipeRefreshLayout swipeContainer;
     EndlessRecyclerViewScrollListener scrollListener;
+    FloatingActionButton fabCompose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +107,40 @@ public class TimelineActivity extends AppCompatActivity {
         // Adds the scroll listener to RecyclerView
         rvTweets.addOnScrollListener(scrollListener);
 
+        // Load user profile data
+        getProfileData();
+
+        // FAB Compose Tweet
+        fabCompose = findViewById(R.id.fabCompose);
+        fabCompose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = ComposeDialog.newInstance(profile);
+                dialog.show(getSupportFragmentManager(), ComposeDialog.TAG);
+            }
+        });
+
         populateHomeTimeLine();
+    }
+
+    public void getProfileData() {
+        client.getProfileData(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "onSuccess get profile data" + json.toString());
+                JSONObject jsonObject = json.jsonObject;
+                try {
+                    profile = User.fromJson(jsonObject);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Exception on load profile data", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure load user profile", throwable);
+            }
+        });
     }
 
     // This is where we will make another API call to get the next page of tweets and add the objects to our current list of tweets
