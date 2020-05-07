@@ -6,4 +6,5 @@
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#8799a5</color>
     <color name="colorDivider">#668799A5</color>
+    <color name="colorRetweetOn">#19CF86</color>
 </resources>

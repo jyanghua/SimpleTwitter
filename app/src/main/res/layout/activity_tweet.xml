@@ -193,39 +193,41 @@
                         android:background="#00FFFFFF"
                         android:scaleType="fitXY"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ibTwRetweet"
+                        app:layout_constraintEnd_toStartOf="@id/tbTwRetweet"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_comment" />
 
-                    <ImageButton
-                        android:id="@+id/ibTwRetweet"
+                    <ToggleButton
+                        android:id="@+id/tbTwRetweet"
                         android:layout_width="17dp"
                         android:layout_height="17dp"
                         android:layout_marginStart="100dp"
                         android:layout_toEndOf="@+id/ibTwComment"
-                        android:background="#00FFFFFF"
+                        android:background="@drawable/retweet_btn"
                         android:scaleType="fitXY"
+                        android:textOn=""
+                        android:textOff=""
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ibTwFavorite"
+                        app:layout_constraintEnd_toStartOf="@id/tbTwFavorite"
                         app:layout_constraintStart_toEndOf="@id/ibTwComment"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_retweet" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
-                        android:id="@+id/ibTwFavorite"
+                    <ToggleButton
+                        android:id="@+id/tbTwFavorite"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_marginStart="100dp"
                         android:layout_marginEnd="100dp"
                         android:layout_marginBottom="1dp"
-                        android:background="#00FFFFFF"
+                        android:background="@drawable/favorite_btn"
                         android:scaleType="fitXY"
+                        android:textOn=""
+                        android:textOff=""
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ibTwRetweet"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_favorite_empty" />
+                        app:layout_constraintStart_toEndOf="@id/tbTwRetweet"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View

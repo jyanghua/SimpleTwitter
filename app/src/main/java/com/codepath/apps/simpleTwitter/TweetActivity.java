@@ -7,20 +7,28 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.simpleTwitter.models.Media;
 import com.codepath.apps.simpleTwitter.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
+
+import okhttp3.Headers;
 
 public class TweetActivity extends AppCompatActivity {
 
     public static final String TAG = "TweetActivity";
+
+    TwitterClient client;
 
     TextView tvTwName;
     TextView tvTwScreenName;
@@ -30,8 +38,8 @@ public class TweetActivity extends AppCompatActivity {
     TextView tvTwFavoriteCount;
 
     ImageButton ibTwComment;
-    ImageButton ibTwRetweet;
-    ImageButton ibTwFavorite;
+    ToggleButton tbTwRetweet;
+    ToggleButton tbTwFavorite;
 
     ImageView ivTwProfileImage;
     ImageView ivTwTweetImage;
@@ -72,8 +80,8 @@ public class TweetActivity extends AppCompatActivity {
         tvTwFavoriteCount = findViewById(R.id. tvTwFavoriteCount);
 
         ibTwComment = findViewById(R.id. ibTwComment);
-        ibTwRetweet = findViewById(R.id. ibTwRetweet);
-        ibTwFavorite = findViewById(R.id. ibTwFavorite);
+        tbTwRetweet = findViewById(R.id.tbTwRetweet);
+        tbTwFavorite = findViewById(R.id.tbTwFavorite);
 
         ivTwProfileImage = findViewById(R.id.ivTwProfileImage);
         ivTwTweetImage = findViewById(R.id.ivTwTweetImage);
@@ -86,6 +94,108 @@ public class TweetActivity extends AppCompatActivity {
         tvTwTimestamp.setText(tweet.fullTimestamp);
         tvTwRetweetCount.setText(String.valueOf(tweet.retweetCount));
         tvTwFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+
+        if (tweet.retweeted) {
+            tbTwRetweet.setChecked(true);
+        } else {
+            tbTwRetweet.setChecked(false);
+        }
+
+        if (tweet.favorited) {
+            tbTwFavorite.setChecked(true);
+        } else {
+            tbTwFavorite.setChecked(false);
+        }
+
+        client = TwitterApp.getRestClient(context);
+
+        tbTwRetweet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    // Toggle is enabled, retweets the tweet
+                    client.retweetTweet(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.i(TAG, "onSuccess retweet: " + tweet.body);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure retweet: " + tweet.body);
+                        }
+                    });
+                } else {
+                    // Toggle is disabled, unretweets the tweet
+                    client.unRetweetTweet(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.i(TAG, "onSuccess unretweet: " + tweet.body);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure unretweet: " + tweet.body);
+                        }
+                    });
+                }
+            }
+        });
+
+        tvTwRetweetCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tbTwRetweet.isChecked()) {
+                    tbTwRetweet.setChecked(false);
+                } else {
+                    tbTwRetweet.setChecked(true);
+                }
+            }
+        });
+
+        tbTwFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    // Toggle is enabled, retweets the tweet
+                    client.favoriteTweet(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.i(TAG, "onSuccess favorite: " + tweet.body);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure favorite: " + tweet.body);
+                        }
+                    });
+                } else {
+                    // Toggle is disabled, unretweets the tweet
+                    client.unFavoriteTweet(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.i(TAG, "onSuccess unfavorite: " + tweet.body);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e(TAG, "onFailure unfavorite: " + tweet.body);
+                        }
+                    });
+                }
+            }
+        });
+
+        tvTwFavoriteCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tbTwFavorite.isChecked()) {
+                    tbTwFavorite.setChecked(false);
+                } else {
+                    tbTwFavorite.setChecked(true);
+                }
+            }
+        });
 
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)

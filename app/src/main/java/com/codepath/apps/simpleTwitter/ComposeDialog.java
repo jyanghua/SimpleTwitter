@@ -1,6 +1,7 @@
 package com.codepath.apps.simpleTwitter;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,8 +32,16 @@ import okhttp3.Headers;
 
 public class ComposeDialog extends DialogFragment implements View.OnClickListener{
 
-    public static final String TAG = "DialogFragment";
+    public static final String TAG = "ComposeDialog";
     public static final int MAX_TWEET_LENGTH = 280;
+
+    /* The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface TweetListener{
+        public void sendTweet(Tweet tweet);
+    }
+    public TweetListener tweetListener;
 
     ImageButton ibCancelTweet;
     Button btnTweet;
@@ -128,6 +137,10 @@ public class ComposeDialog extends DialogFragment implements View.OnClickListene
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
                             Log.i(TAG, "Published tweet says: " + tweet);
                             Toast.makeText(getContext(), "Tweet published", Toast.LENGTH_LONG).show();
+
+                            // Using the interface to send back data to the TimelineActivity
+                            tweetListener.sendTweet(tweet);
+
                             // Close the dialog and return back to the parent activity
                             dismiss();
                         } catch (JSONException e) {
@@ -145,4 +158,13 @@ public class ComposeDialog extends DialogFragment implements View.OnClickListene
         }
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            tweetListener = (TweetListener) getActivity();
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());
+        }
+    }
 }

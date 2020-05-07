@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -32,7 +34,7 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeDialog.TweetListener {
 
     public final static String TAG = "TimelineActivity";
     TwitterClient client;
@@ -45,6 +47,17 @@ public class TimelineActivity extends AppCompatActivity {
     FloatingActionButton fabCompose;
 
     @Override
+    public void sendTweet(Tweet tweet) {
+        Log.d(TAG, "sendTweet: got the tweet: " + tweet.toString());
+        // Modify data source of tweets
+        // Update recycler view with the tweet
+        tweets.add(0, tweet);
+        // Update the adapter
+        adapter.notifyItemInserted(0);
+        rvTweets.smoothScrollToPosition(0);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
@@ -55,11 +68,12 @@ public class TimelineActivity extends AppCompatActivity {
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
 
-        // Remove default title text
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         // Display logo and set clickable
         final ActionBar actionBar = getSupportActionBar();
+        // Remove default title text
+        assert actionBar != null;
+        actionBar.setDisplayShowTitleEnabled(false);
+        // Set top home icon
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.toolbar_logo);
 
@@ -121,6 +135,13 @@ public class TimelineActivity extends AppCompatActivity {
         });
 
         populateHomeTimeLine();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.timeline, menu);
+        return true;
     }
 
     public void getProfileData() {
@@ -199,6 +220,11 @@ public class TimelineActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 rvTweets.smoothScrollToPosition(0);
+                return true;
+            case R.id.logout:
+                client.clearAccessToken();
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

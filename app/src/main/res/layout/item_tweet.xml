@@ -89,8 +89,8 @@
 
     <ImageButton
         android:id="@+id/ibComment"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:scaleType="fitXY"
         android:layout_below="@+id/ivTweetImage"
         android:layout_marginStart="12dp"
@@ -99,16 +99,18 @@
         android:background="#00FFFFFF"
         app:srcCompat="@drawable/ic_comment" />
 
-    <ImageButton
-        android:id="@+id/ibRetweet"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
+    <ToggleButton
+        android:id="@+id/tbRetweet"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:scaleType="fitXY"
         android:layout_below="@+id/ivTweetImage"
-        android:layout_marginStart="65dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ibComment"
-        android:background="#00FFFFFF"
+        android:background="@drawable/retweet_btn"
+        android:textOn=""
+        android:textOff=""
         app:srcCompat="@drawable/ic_retweet" />
 
     <TextView
@@ -116,34 +118,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivTweetImage"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/ibRetweet"
+        android:layout_marginTop="3dp"
+        android:paddingTop="2dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
+        android:layout_toEndOf="@+id/tbRetweet"
         android:text="TextView"
         android:textColor="@color/colorTextSecondary"
         android:textSize="10sp"
         tools:text="100" />
 
-    <ImageButton
-        android:id="@+id/ibFavorite"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+    <ToggleButton
+        android:id="@+id/tbFavorite"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:scaleType="fitXY"
         android:layout_below="@+id/ivTweetImage"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/tvRetweetCount"
-        android:background="#00FFFFFF"
-        app:srcCompat="@drawable/ic_favorite_empty" />
+        android:layout_toEndOf="@+id/tbRetweet"
+        android:textOn=""
+        android:textOff=""
+        android:background="@drawable/favorite_btn" />
 
     <TextView
         android:id="@+id/tvFavoriteCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivTweetImage"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/ibFavorite"
+        android:layout_marginTop="3dp"
+        android:paddingTop="2dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
+        android:layout_toEndOf="@+id/tbFavorite"
         android:text="TextView"
         android:textColor="@color/colorTextSecondary"
         android:textSize="10sp"

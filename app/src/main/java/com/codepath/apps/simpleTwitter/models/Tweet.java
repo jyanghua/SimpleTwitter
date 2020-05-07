@@ -21,6 +21,8 @@ public class Tweet {
     public User user;
     public int retweetCount;
     public int favoriteCount;
+    public boolean retweeted;
+    public boolean favorited;
     public List<TweetUrl> tweetUrls;
     public Media media;
 
@@ -30,10 +32,10 @@ public class Tweet {
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
 
-        try {
+        if (jsonObject.has("full_text")) {
             tweet.body = jsonObject.getString("full_text");
-        } catch (Exception e) {
-            Log.e("Tweet", "Error getting full text from tweet, opting for regular text", e);
+        } else {
+            Log.i("Tweet", "Opting for regular text");
             tweet.body = jsonObject.getString("text");
         }
 
@@ -44,6 +46,8 @@ public class Tweet {
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.retweetCount = jsonObject.getInt("retweet_count");
         tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
+        tweet.favorited = jsonObject.getBoolean("favorited");
 
         try {
             JSONArray temp = jsonObject.getJSONObject("entities").getJSONArray("urls");
